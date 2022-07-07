@@ -119,6 +119,7 @@ resource "aws_autoscaling_attachment" "terramino" {
 
 // security groups ( the instance level firewall) who can come in and who can leave
 // this defines two security groups, one for the EC2 instance and the other for the LB
+//
 //eagress means exiting the cloud, in gress means entering the cloud
 //defines who does and who doesn't have access
 // in this case it allows all traffic leaving the cloud
