@@ -8,3 +8,4 @@ terraform {
 
   required_version = ">= 0.15"
 }
+//defines the versions of aws and terraform being used 

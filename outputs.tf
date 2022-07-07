@@ -9,3 +9,6 @@ output "application_endpoint" {
 output "asg_name" {
   value = aws_autoscaling_group.terramino.name
 }
+
+//output values make information about your infrastructure available on the command line
+// output is similar to return 
