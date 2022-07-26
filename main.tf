@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-2"
+  region = "us-east-1"
 
   default_tags {
     tags = {
@@ -49,9 +49,9 @@ resource "aws_launch_configuration" "terramino" {
 
 resource "aws_autoscaling_group" "terramino" {
   name                 = "terramino"
-  min_size             = 1
+  min_size             = 2
   max_size             = 3
-  desired_capacity     = 1
+  desired_capacity     = 2
   launch_configuration = aws_launch_configuration.terramino.name
   vpc_zone_identifier  = module.vpc.public_subnets
 
