@@ -55,6 +55,8 @@ resource "aws_autoscaling_group" "terramino" {
   launch_configuration = aws_launch_configuration.terramino.name
   vpc_zone_identifier  = module.vpc.public_subnets
 
+  health_check_type    = "ELB"
+
   tag {
     key                 = "Name"
     value               = "HashiCorp Learn ASG - Terramino"
@@ -107,7 +109,7 @@ resource "aws_security_group" "terramino_instance" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    security_groups = [aws_security_group.terramino_lb.id]
+    cidr_blocks     = ["0.0.0.0/0"]
   }
 
   vpc_id = module.vpc.vpc_id
