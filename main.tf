@@ -97,7 +97,7 @@ resource "aws_lb_target_group" "terramino" {
 
 resource "aws_lb_target_group_attachment" "test" {
   target_group_arn = aws_lb_target_group.terramino.arn
-  target_id        = "i-0f1999facd36db180"
+  target_id        = aws_autoscaling_group.terramino.instances
   port             = 80
 }
 
