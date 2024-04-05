@@ -39,7 +39,7 @@ resource "aws_launch_template" "terramino" {
   name_prefix   = "learn-terraform-aws-asg-"
   image_id      = data.aws_ami.amazon-linux.id
   instance_type = "t2.micro"
-  user_data     = file("user-data.sh")
+  user_data     = base64encode(file("./user-data.sh"))
   network_interfaces {
     security_groups = [aws_security_group.terramino_instance.id]
   }
@@ -49,12 +49,16 @@ resource "aws_launch_template" "terramino" {
   }
 }
 resource "aws_autoscaling_group" "terramino" {
-  name                 = "terramino"
-  min_size             = 1
-  max_size             = 3
-  desired_capacity     = 1
-  launch_configuration = aws_launch_template.terramino.name
-  vpc_zone_identifier  = module.vpc.public_subnets
+  name             = "terramino"
+  min_size         = 1
+  max_size         = 3
+  desired_capacity = 1
+  launch_template {
+    id      = aws_launch_template.terramino.id
+    version = "$Latest"
+  }
+
+  vpc_zone_identifier = module.vpc.public_subnets
 
   health_check_type = "ELB"
 
