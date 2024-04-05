@@ -95,6 +95,11 @@ resource "aws_lb_target_group" "terramino" {
   vpc_id   = module.vpc.vpc_id
 }
 
+resource "aws_lb_target_group_attachment" "test" {
+  target_group_arn = aws_lb_target_group.terramino.arn
+  target_id        = "i-0f1999facd36db180"
+  port             = 80
+}
 
 resource "aws_autoscaling_attachment" "terramino" {
   autoscaling_group_name = aws_autoscaling_group.terramino.id

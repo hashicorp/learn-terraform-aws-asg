@@ -5,7 +5,6 @@ yum -y remove httpd-tools
 yum install -y httpd24 php72 mysql57-server php72-mysqlnd
 service httpd start
 chkconfig httpd on
-
 usermod -a -G apache ec2-user
 chown -R ec2-user:apache /var/www
 chmod 2775 /var/www
