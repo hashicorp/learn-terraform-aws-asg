@@ -14,7 +14,7 @@ data "aws_availability_zones" "available" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "2.77.0"
+  version = "5.7.0"
 
   name = "main-vpc"
   cidr = "10.0.0.0/16"
@@ -35,18 +35,19 @@ data "aws_ami" "amazon-linux" {
   }
 }
 
-resource "aws_launch_configuration" "terramino" {
-  name_prefix     = "learn-terraform-aws-asg-"
-  image_id        = data.aws_ami.amazon-linux.id
-  instance_type   = "t2.micro"
-  user_data       = file("user-data.sh")
-  security_groups = [aws_security_group.terramino_instance.id]
+resource "aws_launch_template" "foo" {
+  name_prefix   = "learn-terraform-aws-asg-"
+  image_id      = data.aws_ami.amazon-linux.id
+  instance_type = "t2.micro"
+  user_data     = file("user-data.sh")
+  network_interfaces {
+    security_groups = [aws_security_group.terramino_instance.id]
+  }
 
   lifecycle {
     create_before_destroy = true
   }
 }
-
 resource "aws_autoscaling_group" "terramino" {
   name                 = "terramino"
   min_size             = 1
@@ -55,7 +56,7 @@ resource "aws_autoscaling_group" "terramino" {
   launch_configuration = aws_launch_configuration.terramino.name
   vpc_zone_identifier  = module.vpc.public_subnets
 
-  health_check_type    = "ELB"
+  health_check_type = "ELB"
 
   tag {
     key                 = "Name"
@@ -93,7 +94,7 @@ resource "aws_lb_target_group" "terramino" {
 
 resource "aws_autoscaling_attachment" "terramino" {
   autoscaling_group_name = aws_autoscaling_group.terramino.id
-  alb_target_group_arn   = aws_lb_target_group.terramino.arn
+  lb_target_group_arn    = aws_lb_target_group.terramino.arn
 }
 
 resource "aws_security_group" "terramino_instance" {
@@ -106,10 +107,10 @@ resource "aws_security_group" "terramino_instance" {
   }
 
   egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   vpc_id = module.vpc.vpc_id
