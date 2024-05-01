@@ -18,7 +18,7 @@ conifguration files for you to use to learn how to configure and scale an Auto S
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.44.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.47.0 |
 
 ## Modules
 
