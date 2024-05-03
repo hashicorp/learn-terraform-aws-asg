@@ -95,6 +95,7 @@ resource "aws_lb_target_group" "terramino" {
 
 
 resource "aws_autoscaling_attachment" "terramino" {
+  depends_on             = [aws_autoscaling_group.terramino, aws_lb_target_group.terramino]
   autoscaling_group_name = aws_autoscaling_group.terramino.id
   alb_target_group_arn   = aws_lb_target_group.terramino.arn
 }
